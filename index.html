@@ -1,0 +1,620 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Manh Quang Dau — Full-Stack Software Developer</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@400;500&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400&display=swap" rel="stylesheet" />
+<style>
+  :root {
+    /* background preset = Ink (default) */
+    --bg: oklch(0.17 0.004 70);
+    --surface: oklch(0.215 0.005 70);
+    --line: oklch(0.31 0.006 80);
+    --line-soft: oklch(0.26 0.005 80);
+    --text: oklch(0.95 0.004 80);
+    --muted: oklch(0.69 0.006 80);
+    --faint: oklch(0.56 0.006 80);
+    --accent: oklch(0.86 0.012 85);   /* monochrome default */
+
+    --display: 'Space Grotesk', sans-serif;
+    --sans: 'Space Grotesk', sans-serif;
+    --mono: 'IBM Plex Mono', monospace;
+
+    --maxw: 1180px;
+    --pad-x: clamp(15px, 2.2vw, 30px);
+    --gap-section: 92px;   /* density: regular */
+  }
+
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--sans);
+    font-weight: 400;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+  ::selection { background: var(--accent); color: var(--bg); }
+  a { color: inherit; text-decoration: none; }
+
+  /* ---------- sticky top bar ---------- */
+  .topbar {
+    position: sticky; top: 0; z-index: 40;
+    backdrop-filter: blur(10px);
+    background: color-mix(in oklch, var(--bg) 80%, transparent);
+    border-bottom: 1px solid var(--line-soft);
+  }
+  .topbar .inner {
+    max-width: var(--maxw); margin: 0 auto;
+    padding: 13px var(--pad-x);
+    display: flex; align-items: center; gap: 18px;
+  }
+  .topbar .who {
+    font-family: var(--display); font-weight: 600; font-size: 15px;
+    letter-spacing: -0.01em;
+  }
+  .topbar nav { margin-left: auto; display: flex; gap: 22px; }
+  .topbar nav a {
+    font-family: var(--mono); font-size: 12px; letter-spacing: 0.02em;
+    color: var(--muted); transition: color 0.15s;
+  }
+  .topbar nav a:hover { color: var(--text); }
+  @media (max-width: 640px) { .topbar nav { display: none; } }
+
+  /* ---------- layout shell ---------- */
+  .wrap { max-width: var(--maxw); margin: 0 auto; padding: 0 var(--pad-x) 120px; }
+
+  section { scroll-margin-top: 70px; }
+  .section-head {
+    display: flex; align-items: baseline; gap: 14px;
+    margin-bottom: 30px;
+    padding-bottom: 14px;
+    border-bottom: 1px solid var(--line);
+  }
+  .section-head .idx {
+    font-family: var(--mono); font-size: 12px; color: var(--accent);
+    letter-spacing: 0.04em;
+  }
+  .section-head h2 {
+    font-family: var(--display); font-weight: 500; font-size: 15px;
+    letter-spacing: 0.18em; text-transform: uppercase;
+    margin: 0; color: var(--muted);
+  }
+
+  /* ---------- hero / header ---------- */
+  header.hero { padding: clamp(70px, 11vw, 130px) var(--pad-x) var(--gap-section); }
+  .hero .eyebrow {
+    font-family: var(--mono); font-size: 13px; color: var(--accent);
+    letter-spacing: 0.04em; margin: 0 0 22px;
+  }
+  .hero h1 {
+    font-family: var(--display); font-weight: 600;
+    font-size: clamp(46px, 9vw, 92px);
+    line-height: 0.98; letter-spacing: -0.03em;
+    margin: 0; text-wrap: balance;
+  }
+  .hero .role {
+    font-family: var(--display); font-weight: 400;
+    font-size: clamp(19px, 2.6vw, 26px);
+    color: var(--muted); margin: 22px 0 0; letter-spacing: -0.01em;
+  }
+  .hero .role b { color: var(--text); font-weight: 500; }
+  .hero .meta {
+    display: flex; flex-wrap: wrap; gap: 10px 26px;
+    margin-top: 36px;
+    font-family: var(--mono); font-size: 13px; color: var(--muted);
+  }
+  .hero .meta span { display: inline-flex; align-items: center; gap: 9px; }
+  .hero .meta span::before {
+    content: ""; width: 5px; height: 5px; border-radius: 50%;
+    background: var(--accent); display: inline-block;
+  }
+  .links { display: flex; flex-wrap: wrap; gap: 11px; margin-top: 30px; }
+  .links a {
+    font-family: var(--mono); font-size: 12.5px;
+    display: inline-flex; align-items: center; gap: 8px;
+    padding: 9px 16px;
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    color: var(--muted);
+    transition: border-color 0.16s, color 0.16s, transform 0.16s;
+  }
+  .links a:hover { color: var(--text); border-color: var(--accent); transform: translateY(-2px); }
+  .links a .arw { color: var(--accent); transition: transform 0.16s; }
+  .links a:hover .arw { transform: translate(2px,-2px); }
+
+  /* ---------- profile ---------- */
+  .lede {
+    font-family: var(--display); font-weight: 300;
+    font-size: clamp(20px, 2.5vw, 27px);
+    line-height: 1.5; letter-spacing: -0.01em;
+    text-wrap: pretty;
+    color: var(--text);
+  }
+  .lede .dim { color: var(--faint); }
+
+  /* ---------- skills ---------- */
+  .skills-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 30px 44px;
+  }
+  .skill-cat h3 {
+    font-family: var(--mono); font-weight: 500; font-size: 12px;
+    letter-spacing: 0.05em; color: var(--faint);
+    margin: 0 0 14px; text-transform: uppercase;
+  }
+  .tags { display: flex; flex-wrap: wrap; gap: 8px; }
+  .tag {
+    font-family: var(--mono); font-size: 12.5px;
+    padding: 5px 12px;
+    border: 1px solid var(--line);
+    border-radius: 7px;
+    color: var(--text);
+    background: var(--surface);
+    transition: border-color 0.14s, color 0.14s;
+  }
+  .tag:hover { border-color: var(--accent); }
+
+  /* ---------- experience timeline ---------- */
+  .timeline { display: flex; flex-direction: column; }
+  .job {
+    display: grid;
+    grid-template-columns: 168px 1fr;
+    gap: 36px;
+    padding: 34px 0;
+    border-top: 1px solid var(--line-soft);
+  }
+  .job:first-child { border-top: none; padding-top: 0; }
+  .job .when {
+    font-family: var(--mono); font-size: 12.5px; color: var(--muted);
+    line-height: 1.5; padding-top: 5px;
+  }
+  .job .when .now {
+    display: inline-block; margin-top: 8px;
+    color: var(--accent);
+  }
+  .job .co {
+    font-family: var(--display); font-weight: 600; font-size: 22px;
+    letter-spacing: -0.015em; margin: 0;
+  }
+  .job .title {
+    font-family: var(--sans); font-size: 14.5px; color: var(--muted);
+    margin: 3px 0 0;
+  }
+  .job ul {
+    list-style: none; padding: 0; margin: 18px 0 0;
+    display: flex; flex-direction: column; gap: 9px;
+  }
+  .job ul li {
+    position: relative; padding-left: 20px;
+    font-size: 15px; color: var(--text); line-height: 1.55;
+    text-wrap: pretty;
+  }
+  .job ul li::before {
+    content: ""; position: absolute; left: 0; top: 11px;
+    width: 6px; height: 1.5px; background: var(--accent);
+  }
+  .job .tech {
+    margin-top: 18px;
+    font-family: var(--mono); font-size: 12px; color: var(--faint);
+    line-height: 1.7;
+  }
+  .job .tech b { color: var(--muted); font-weight: 400; }
+  @media (max-width: 680px) {
+    .job { grid-template-columns: 1fr; gap: 10px; }
+    .job .when { padding-top: 0; }
+  }
+
+  /* ---------- selected work ---------- */
+  .work-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 22px;
+  }
+  .work {
+    border: 1px solid var(--line-soft);
+    border-radius: 12px;
+    overflow: hidden;
+    background: var(--surface);
+    transition: border-color 0.16s, transform 0.16s;
+  }
+  .work:hover { border-color: var(--accent); transform: translateY(-3px); }
+  .work .shot {
+    aspect-ratio: 16 / 10;
+    position: relative;
+    background:
+      radial-gradient(circle at 12% 18%, color-mix(in oklch, var(--accent) 24%, transparent) 0 80px, transparent 80px),
+      radial-gradient(circle at 88% 82%, color-mix(in oklch, var(--accent) 16%, transparent) 0 110px, transparent 110px),
+      repeating-linear-gradient(135deg,
+        color-mix(in oklch, var(--bg) 72%, transparent) 0 11px,
+        transparent 11px 22px),
+      var(--surface);
+    border-bottom: 1px solid var(--line-soft);
+    display: grid;
+    place-items: center;
+    padding: 16px;
+  }
+  .work .shot .drop {
+    width: min(92%, 340px);
+    height: min(82%, 180px);
+    border: 1px dashed color-mix(in oklch, var(--accent) 58%, var(--line-soft));
+    border-radius: 10px;
+    background: color-mix(in oklch, var(--bg) 62%, transparent);
+    display: grid;
+    place-items: center;
+    text-align: center;
+    padding: 12px;
+  }
+  .work .body { padding: 18px 20px 22px; }
+  .work .body h3 {
+    font-family: var(--display); font-weight: 600; font-size: 18px;
+    letter-spacing: -0.01em; margin: 0;
+  }
+  .work .body .src { font-family: var(--mono); font-size: 11px; color: var(--accent); margin: 5px 0 0; }
+  .work .body p { font-size: 14px; color: var(--muted); margin: 11px 0 0; line-height: 1.5; }
+
+  /* ---------- education + honours ---------- */
+  .two { display: grid; grid-template-columns: 1fr 1fr; gap: 48px; }
+  @media (max-width: 680px) { .two { grid-template-columns: 1fr; gap: var(--gap-section); } }
+
+  .edu-item { padding: 20px 0; border-top: 1px solid var(--line-soft); }
+  .edu-item:first-child { padding-top: 0; border-top: none; }
+  .edu-item .deg { font-family: var(--display); font-weight: 500; font-size: 17px; letter-spacing: -0.01em; margin: 0; }
+  .edu-item .school { font-size: 14px; color: var(--muted); margin: 4px 0 0; }
+  .edu-item .ed-meta { font-family: var(--mono); font-size: 12px; color: var(--faint); margin: 8px 0 0; display: flex; gap: 16px; flex-wrap: wrap; }
+
+  .honour-list { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; }
+  .honour-list li {
+    padding: 14px 0; border-top: 1px solid var(--line-soft);
+    display: flex; justify-content: space-between; gap: 16px; align-items: baseline;
+  }
+  .honour-list li:first-child { border-top: none; padding-top: 0; }
+  .honour-list .h-name { font-size: 14.5px; }
+  .honour-list .h-org { font-size: 12.5px; color: var(--faint); display: block; margin-top: 2px; }
+  .honour-list .h-year { font-family: var(--mono); font-size: 12px; color: var(--accent); white-space: nowrap; }
+
+  /* ---------- footer ---------- */
+  footer {
+    max-width: var(--maxw); margin: 0 auto;
+    padding: 50px var(--pad-x) 70px;
+    border-top: 1px solid var(--line-soft);
+    display: flex; flex-wrap: wrap; gap: 16px; justify-content: space-between; align-items: center;
+  }
+  footer .sig { font-family: var(--display); font-weight: 600; font-size: 16px; }
+  footer .copy { font-family: var(--mono); font-size: 12px; color: var(--faint); }
+  footer .ftlinks { display: flex; gap: 18px; }
+  footer .ftlinks a { font-family: var(--mono); font-size: 12px; color: var(--muted); transition: color 0.15s; }
+  footer .ftlinks a:hover { color: var(--accent); }
+
+  /* density helper */
+  .stack > section + section { margin-top: var(--gap-section); }
+</style>
+</head>
+<body>
+  <div class="topbar">
+    <div class="inner">
+      <span class="who">Manh Quang Dau</span>
+      <nav>
+        <a href="#about">About</a>
+        <a href="#skills">Skills</a>
+        <a href="#experience">Experience</a>
+        <a href="#work">Work</a>
+        <a href="#education">Education</a>
+      </nav>
+    </div>
+  </div>
+
+  <header class="hero wrap">
+    <p class="eyebrow">Full-Stack Software Developer · Melbourne, Australia</p>
+    <h1>Manh Quang Dau</h1>
+    <p class="role">Building scalable web apps & microservices with <b>.NET</b>, <b>React</b> and <b>Azure</b>.</p>
+    <div class="meta">
+      <span>Melbourne, Australia</span>
+      <span>manhquang144@gmail.com</span>
+      <span>0420 268 441</span>
+    </div>
+    <div class="links">
+      <a href="https://github.com/manhquang144" target="_blank" rel="noopener">GitHub <span class="arw">↗</span></a>
+      <a href="https://linkedin.com/in/quang-dau-a88518142" target="_blank" rel="noopener">LinkedIn <span class="arw">↗</span></a>
+      <a href="mailto:manhquang144@gmail.com">Email <span class="arw">↗</span></a>
+    </div>
+  </header>
+
+  <main class="wrap stack" style="padding-top: 0;">
+
+    <section id="about">
+      <div class="section-head"><span class="idx">01</span><h2>About</h2></div>
+      <p class="lede">Software developer with <strong style="font-weight:500;">8+ years</strong> of industry experience building scalable web applications and microservices. Specialises in .NET (Framework &amp; Core), front-end development with React and Angular, and Microsoft Azure cloud services. <span class="dim">An adaptable team player who thrives independently, and has contributed as Scrum Master, technical mentor, and research assistant in machine learning.</span></p>
+    </section>
+
+    <section id="skills">
+      <div class="section-head"><span class="idx">02</span><h2>Skills</h2></div>
+      <div class="skills-grid">
+        <div class="skill-cat">
+          <h3>Languages</h3>
+          <div class="tags">
+            <span class="tag">C#</span><span class="tag">TypeScript</span><span class="tag">JavaScript</span><span class="tag">Python</span><span class="tag">SQL</span>
+          </div>
+        </div>
+        <div class="skill-cat">
+          <h3>Backend</h3>
+          <div class="tags">
+            <span class="tag">.NET Core</span><span class="tag">ASP.NET</span><span class="tag">Microservices</span><span class="tag">REST APIs</span><span class="tag">Entity Framework</span><span class="tag">LINQ</span>
+          </div>
+        </div>
+        <div class="skill-cat">
+          <h3>Frontend</h3>
+          <div class="tags">
+            <span class="tag">React</span><span class="tag">Angular</span><span class="tag">Dojo</span><span class="tag">HTML / CSS</span>
+          </div>
+        </div>
+        <div class="skill-cat">
+          <h3>Cloud &amp; DevOps</h3>
+          <div class="tags">
+            <span class="tag">Azure</span><span class="tag">Azure DevOps</span><span class="tag">GitHub Actions</span><span class="tag">Docker</span><span class="tag">CI/CD</span>
+          </div>
+        </div>
+        <div class="skill-cat">
+          <h3>Data &amp; Storage</h3>
+          <div class="tags">
+            <span class="tag">SQL Server</span><span class="tag">Cosmos DB</span><span class="tag">Elasticsearch</span><span class="tag">Redis</span><span class="tag">Blob Storage</span>
+          </div>
+        </div>
+        <div class="skill-cat">
+          <h3>Quality &amp; Monitoring</h3>
+          <div class="tags">
+            <span class="tag">SonarQube</span><span class="tag">Veracode</span><span class="tag">Grafana</span><span class="tag">AppDynamics</span><span class="tag">App Insights</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="experience">
+      <div class="section-head"><span class="idx">03</span><h2>Experience</h2></div>
+      <div class="timeline">
+
+        <article class="job">
+          <div class="when">Aug 2022<br>– <span class="now">Now</span></div>
+          <div>
+            <h3 class="co">Dayforce / Ceridian</h3>
+            <p class="title">Full-Stack Software Developer</p>
+            <ul>
+              <li>Developed web applications with ASP.NET and React as part of the Dayforce HCM product.</li>
+              <li>Built and maintained microservices and REST APIs using .NET Core.</li>
+              <li>Monitored CI/CD pipelines via Azure DevOps and GitHub Actions; investigated and resolved functional and performance issues across SQL and .NET Framework.</li>
+              <li>Stood up quality &amp; reliability tooling — SonarQube, Veracode, Grafana, AppDynamics, Azure Log Analytics and Application Insights.</li>
+              <li>Served as Scrum Master, facilitating standups, sprint reviews, refinements, planning and retrospectives, and mentored junior engineers.</li>
+            </ul>
+            <p class="tech"><b>Stack —</b> C#, .NET Core, ASP.NET, React, TypeScript, Dojo, SQL Server, LINQ, Microservices, SonarQube, Veracode, Grafana, AppDynamics, Azure, Azure DevOps, GitHub Actions, Jira</p>
+          </div>
+        </article>
+
+        <article class="job">
+          <div class="when">Jul 2019<br>– May 2022</div>
+          <div>
+            <h3 class="co">Gruntify</h3>
+            <p class="title">Full-Stack Software Developer</p>
+            <ul>
+              <li>Built a field-data management platform for collecting reports, managing jobs and processing incoming data (ASP.NET Core MVC + Angular).</li>
+              <li>Developed Web APIs powering a companion mobile application with .NET Core.</li>
+              <li>Set up and managed Azure infrastructure: App Service, SQL Database, Cosmos DB, Blob Storage, Service Bus and Elasticsearch.</li>
+              <li>Configured CI/CD workflows with Azure DevOps and worked directly with clients in an Agile/Scrum environment.</li>
+            </ul>
+            <p class="tech"><b>Stack —</b> C#, .NET Core, ASP.NET, Angular, TypeScript, SQL Server, Cosmos DB, Azure, Elasticsearch, Auth0, Redis, Hangfire, Docker, Azure DevOps</p>
+          </div>
+        </article>
+
+        <article class="job">
+          <div class="when">Aug 2017<br>– Jun 2019</div>
+          <div>
+            <h3 class="co">GIS People</h3>
+            <p class="title">Full-Stack Software Developer</p>
+            <ul>
+              <li>Developed web applications using .NET Core MVC and Entity Framework.</li>
+              <li>Built a real-time political donations reporting application for the Electoral Commission of Queensland.</li>
+              <li>Set up and managed Azure infrastructure (App Service, SQL Database, Blob Storage, Service Bus) and integrated the QGOV digital identity verification platform.</li>
+              <li>Configured CI/CD pipelines and liaised with clients in an Agile environment.</li>
+            </ul>
+            <p class="tech"><b>Stack —</b> C#, ASP.NET MVC, JavaScript, CSS, SQL Server, LINQ, Entity Framework, Azure, OAuth, OpenID</p>
+          </div>
+        </article>
+
+        <article class="job">
+          <div class="when">Jan 2016<br>– Apr 2016</div>
+          <div>
+            <h3 class="co">Global Enterprise Mobility</h3>
+            <p class="title">Apprenticeship</p>
+            <ul>
+              <li>Developed web applications with ASP.NET MVC, JavaScript and MySQL.</li>
+              <li>Resolved functional and performance bugs and built a background job for batch processing.</li>
+              <li>Assisted QA in documenting guidelines.</li>
+            </ul>
+            <p class="tech"><b>Stack —</b> C#, ASP.NET MVC, JavaScript, HTML, CSS, MySQL, LINQ, Azure DevOps, IIS</p>
+          </div>
+        </article>
+
+        <article class="job">
+          <div class="when">Mar 2014<br>– Dec 2015</div>
+          <div>
+            <h3 class="co">UET Laboratory — VNU Hanoi</h3>
+            <p class="title">Undergraduate Research Assistant</p>
+            <ul>
+              <li>Conducted research in Computer Vision and data manipulation.</li>
+              <li>Set up required cloud services on Google Cloud and Azure.</li>
+            </ul>
+            <p class="tech"><b>Stack —</b> Python, C#, OCR, Google Cloud Vision, Azure Cognitive Services</p>
+          </div>
+        </article>
+
+      </div>
+    </section>
+
+    <section id="work">
+      <div class="section-head"><span class="idx">04</span><h2>Selected Work</h2></div>
+      <div class="work-grid">
+        <article class="work">
+          <div class="shot">
+            <div class="drop"></div>
+          </div>
+          <div class="body">
+            <h3>Field-Data Platform</h3>
+            <p class="src">Gruntify</p>
+            <p>Report collection, job management and real-time data processing, with a companion mobile app on .NET Core APIs.</p>
+          </div>
+        </article>
+        <article class="work">
+          <div class="shot">
+            <div class="drop"></div>
+          </div>
+          <div class="body">
+            <h3>Donations Reporting</h3>
+            <p class="src">Electoral Commission of QLD</p>
+            <p>Real-time political donations reporting integrated with the QGOV digital identity verification platform.</p>
+          </div>
+        </article>
+        <article class="work">
+          <div class="shot">
+            <div class="drop"></div>
+          </div>
+          <div class="body">
+            <h3>Dayforce HCM</h3>
+            <p class="src">Dayforce / Ceridian</p>
+            <p>Enterprise human-capital management modules built on ASP.NET, React and a .NET Core microservice backend.</p>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section id="education">
+      <div class="two">
+        <div>
+          <div class="section-head"><span class="idx">05</span><h2>Education</h2></div>
+          <div class="edu-item">
+            <p class="deg">Master of Information Technology — Computer Science</p>
+            <p class="school">Queensland University of Technology</p>
+            <p class="ed-meta"><span>Feb 2017 – Dec 2018</span><span>GPA 6.94 / 7.0</span></p>
+          </div>
+          <div class="edu-item">
+            <p class="deg">Bachelor of Information Technology (Honours)</p>
+            <p class="school">University of Engineering &amp; Technology, VNU Hanoi</p>
+            <p class="ed-meta"><span>Sep 2012 – Jun 2016</span><span>GPA 3.76 / 4.0</span></p>
+          </div>
+        </div>
+        <div>
+          <div class="section-head"><span class="idx">06</span><h2>Honours &amp; Awards</h2></div>
+          <ul class="honour-list">
+            <li><span><span class="h-name">Dean's List Award — Science &amp; Engineering</span><span class="h-org">Queensland University of Technology</span></span><span class="h-year">2017, 2018</span></li>
+            <li><span><span class="h-name">Science &amp; Engineering International Merit Scholarship</span><span class="h-org">Queensland University of Technology</span></span><span class="h-year">2017</span></li>
+            <li><span><span class="h-name">Excellent Student Award (2012–2016)</span><span class="h-org">University of Engineering &amp; Technology, VNU</span></span><span class="h-year">2016</span></li>
+            <li><span><span class="h-name">Excellent Thesis Award</span><span class="h-org">University of Engineering &amp; Technology, VNU</span></span><span class="h-year">2016</span></li>
+            <li><span><span class="h-name">Shinnyo-en Foundation Scholarship</span><span class="h-org">Shinnyo-en Foundation</span></span><span class="h-year">2016</span></li>
+            <li><span><span class="h-name">FE Highest Score Passer — Certificate of Excellence</span><span class="h-org">ITPEC / JITEC, Japan</span></span><span class="h-year">2015</span></li>
+            <li><span><span class="h-name">University Scholarship for Excellent Student</span><span class="h-org">University of Engineering &amp; Technology, VNU</span></span><span class="h-year">2015</span></li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer>
+    <span class="sig">Manh Quang Dau</span>
+    <span class="copy">© 2026 · Built in Melbourne</span>
+    <div class="ftlinks">
+      <a href="https://github.com/manhquang144" target="_blank" rel="noopener">GitHub</a>
+      <a href="https://linkedin.com/in/quang-dau-a88518142" target="_blank" rel="noopener">LinkedIn</a>
+      <a href="mailto:manhquang144@gmail.com">Email</a>
+    </div>
+  </footer>
+
+  <!-- ============ Tweaks ============ -->
+  <div id="tweaks-root"></div>
+
+  <template id="__bundler_thumbnail" data-bg-color="#231a13">
+    <svg viewBox="0 0 1200 800" xmlns="http://www.w3.org/2000/svg">
+      <rect width="1200" height="800" fill="#231a13"/>
+      <text x="600" y="430" font-family="'Space Grotesk', sans-serif" font-size="300" font-weight="600" fill="#f2ede6" text-anchor="middle">MQ</text>
+      <circle cx="600" cy="560" r="14" fill="#5fb98a"/>
+    </svg>
+  </template>
+  <script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+  <script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+  <script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+  <script type="text/babel" src="tweaks-panel.jsx"></script>
+  <script type="text/babel">
+    const { useEffect } = React;
+
+    const BG = {
+      Ink:      { bg:'oklch(0.17 0.004 70)', surface:'oklch(0.215 0.005 70)', line:'oklch(0.31 0.006 80)', lineSoft:'oklch(0.26 0.005 80)' },
+      Charcoal: { bg:'oklch(0.235 0.005 70)', surface:'oklch(0.28 0.006 70)', line:'oklch(0.37 0.007 80)', lineSoft:'oklch(0.32 0.006 80)' },
+      Slate:    { bg:'oklch(0.215 0.014 252)', surface:'oklch(0.26 0.018 252)', line:'oklch(0.35 0.02 252)', lineSoft:'oklch(0.30 0.016 252)' },
+      Espresso: { bg:'oklch(0.18 0.012 45)', surface:'oklch(0.225 0.015 45)', line:'oklch(0.32 0.018 50)', lineSoft:'oklch(0.27 0.014 48)' },
+    };
+    const ACCENT = {
+      Mono:  'oklch(0.86 0.012 85)',
+      Blue:  'oklch(0.74 0.10 240)',
+      Amber: 'oklch(0.80 0.11 75)',
+      Green: 'oklch(0.78 0.11 155)',
+    };
+    const DENSITY = { Compact: '64px', Regular: '92px', Roomy: '120px' };
+    const DISPLAY = {
+      'Grotesk': "'Space Grotesk', sans-serif",
+      'Serif':   "'Newsreader', serif",
+    };
+
+    const TWEAK_DEFAULTS = /*EDITMODE-BEGIN*/{
+      "background": "Espresso",
+      "accent": "Green",
+      "density": "Regular",
+      "heading": "Grotesk"
+    }/*EDITMODE-END*/;
+
+    function App() {
+      const [t, setTweak] = useTweaks(TWEAK_DEFAULTS);
+
+      useEffect(() => {
+        const r = document.documentElement.style;
+        const bg = BG[t.background] || BG.Ink;
+        r.setProperty('--bg', bg.bg);
+        r.setProperty('--surface', bg.surface);
+        r.setProperty('--line', bg.line);
+        r.setProperty('--line-soft', bg.lineSoft);
+        r.setProperty('--accent', ACCENT[t.accent] || ACCENT.Mono);
+        r.setProperty('--gap-section', DENSITY[t.density] || DENSITY.Regular);
+        r.setProperty('--display', DISPLAY[t.heading] || DISPLAY.Grotesk);
+      }, [t]);
+
+      return (
+        <TweaksPanel title="Tweaks">
+          <TweakSection label="Theme" />
+          <TweakRadio label="Background" value={t.background}
+            options={['Ink','Charcoal','Slate','Espresso']}
+            onChange={(v)=>setTweak('background', v)} />
+          <TweakColor label="Accent" value={ACCENT[t.accent]}
+            options={Object.values(ACCENT)}
+            onChange={(v)=>{
+              const k = Object.keys(ACCENT).find(key=>ACCENT[key]===v) || 'Mono';
+              setTweak('accent', k);
+            }} />
+          <TweakSection label="Layout & Type" />
+          <TweakRadio label="Section spacing" value={t.density}
+            options={['Compact','Regular','Roomy']}
+            onChange={(v)=>setTweak('density', v)} />
+          <TweakRadio label="Headings" value={t.heading}
+            options={['Grotesk','Serif']}
+            onChange={(v)=>setTweak('heading', v)} />
+        </TweaksPanel>
+      );
+    }
+
+    ReactDOM.createRoot(document.getElementById('tweaks-root')).render(<App />);
+  </script>
+</body>
+</html>
