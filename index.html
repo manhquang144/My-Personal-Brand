@@ -9,15 +9,16 @@
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@400;500&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400&display=swap" rel="stylesheet" />
 <style>
   :root {
-    /* background preset = Ink (default) */
-    --bg: oklch(0.17 0.004 70);
-    --surface: oklch(0.215 0.005 70);
-    --line: oklch(0.31 0.006 80);
-    --line-soft: oklch(0.26 0.005 80);
-    --text: oklch(0.95 0.004 80);
-    --muted: oklch(0.69 0.006 80);
-    --faint: oklch(0.56 0.006 80);
-    --accent: oklch(0.86 0.012 85);   /* monochrome default */
+    /* default = Espresso · Light (set live by Tweaks) */
+    --bg: oklch(0.985 0.002 80);
+    --surface: oklch(0.955 0.003 80); 
+    --line: oklch(0.85 0.005 80); 
+    --line-soft: oklch(0.905 0.004 80);
+
+    --text: oklch(0.27 0.01 70);
+    --muted: oklch(0.45 0.008 70);
+    --faint: oklch(0.585 0.006 70);
+    --accent: oklch(0.52 0.14 155);   /* green */
 
     --display: 'Space Grotesk', sans-serif;
     --sans: 'Space Grotesk', sans-serif;
@@ -62,9 +63,29 @@
   .topbar nav { margin-left: auto; display: flex; gap: 22px; }
   .topbar nav a {
     font-family: var(--mono); font-size: 12px; letter-spacing: 0.02em;
-    color: var(--muted); transition: color 0.15s;
+    position: relative;
+    color: var(--muted);
+    transition: color 0.15s;
   }
-  .topbar nav a:hover { color: var(--text); }
+  .topbar nav a::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: -5px;
+    height: 2px;
+    border-radius: 999px;
+    background: var(--accent);
+    transform: scaleX(0);
+    transform-origin: center;
+    transition: transform 0.18s ease;
+  }
+  .topbar nav a:hover {
+    color: var(--accent);
+  }
+  .topbar nav a:hover::after {
+    transform: scaleX(1);
+  }
   @media (max-width: 640px) { .topbar nav { display: none; } }
 
   /* ---------- layout shell ---------- */
@@ -92,6 +113,7 @@
   .hero .eyebrow {
     font-family: var(--mono); font-size: 13px; color: var(--accent);
     letter-spacing: 0.04em; margin: 0 0 22px;
+    font-weight: 500;
   }
   .hero h1 {
     font-family: var(--display); font-weight: 600;
@@ -229,28 +251,38 @@
   .work .shot {
     aspect-ratio: 16 / 10;
     position: relative;
+    overflow: hidden;
     background:
-      radial-gradient(circle at 12% 18%, color-mix(in oklch, var(--accent) 24%, transparent) 0 80px, transparent 80px),
-      radial-gradient(circle at 88% 82%, color-mix(in oklch, var(--accent) 16%, transparent) 0 110px, transparent 110px),
-      repeating-linear-gradient(135deg,
-        color-mix(in oklch, var(--bg) 72%, transparent) 0 11px,
-        transparent 11px 22px),
-      var(--surface);
+      radial-gradient(circle at 10% 16%, color-mix(in oklch, var(--accent) 22%, transparent) 0 90px, transparent 90px),
+      radial-gradient(circle at 86% 84%, color-mix(in oklch, var(--accent) 14%, transparent) 0 120px, transparent 120px),
+      linear-gradient(160deg,
+        color-mix(in oklch, var(--surface) 86%, var(--bg)) 0%,
+        color-mix(in oklch, var(--bg) 88%, var(--surface)) 100%);
     border-bottom: 1px solid var(--line-soft);
-    display: grid;
-    place-items: center;
-    padding: 16px;
   }
-  .work .shot .drop {
-    width: min(92%, 340px);
-    height: min(82%, 180px);
-    border: 1px dashed color-mix(in oklch, var(--accent) 58%, var(--line-soft));
+  .work .shot::before {
+    content: "";
+    position: absolute;
+    inset: 12% 10%;
     border-radius: 10px;
-    background: color-mix(in oklch, var(--bg) 62%, transparent);
-    display: grid;
-    place-items: center;
-    text-align: center;
-    padding: 12px;
+    border: 1px solid color-mix(in oklch, var(--line) 70%, var(--accent));
+    background:
+      linear-gradient(to bottom,
+        color-mix(in oklch, var(--bg) 62%, transparent) 0 26px,
+        transparent 26px 100%),
+      linear-gradient(to right,
+        color-mix(in oklch, var(--accent) 25%, transparent) 0 34%,
+        color-mix(in oklch, var(--line-soft) 70%, transparent) 34% 100%);
+    box-shadow: inset 0 0 0 1px color-mix(in oklch, var(--bg) 70%, transparent);
+  }
+  .work .shot::after {
+    content: "";
+    position: absolute;
+    left: 14%;
+    right: 14%;
+    top: 22%;
+    height: 1px;
+    background: color-mix(in oklch, var(--line-soft) 70%, transparent);
   }
   .work .body { padding: 18px 20px 22px; }
   .work .body h3 {
@@ -290,8 +322,28 @@
   footer .sig { font-family: var(--display); font-weight: 600; font-size: 16px; }
   footer .copy { font-family: var(--mono); font-size: 12px; color: var(--faint); }
   footer .ftlinks { display: flex; gap: 18px; }
-  footer .ftlinks a { font-family: var(--mono); font-size: 12px; color: var(--muted); transition: color 0.15s; }
+  footer .ftlinks a {
+    position: relative;
+    font-family: var(--mono);
+    font-size: 12px;
+    color: var(--muted);
+    transition: color 0.15s;
+  }
+  footer .ftlinks a::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: -5px;
+    height: 2px;
+    border-radius: 999px;
+    background: var(--accent);
+    transform: scaleX(0);
+    transform-origin: center;
+    transition: transform 0.18s ease;
+  }
   footer .ftlinks a:hover { color: var(--accent); }
+  footer .ftlinks a:hover::after { transform: scaleX(1); }
 
   /* density helper */
   .stack > section + section { margin-top: var(--gap-section); }
@@ -321,9 +373,9 @@
       <span>0420 268 441</span>
     </div>
     <div class="links">
-      <a href="https://github.com/manhquang144" target="_blank" rel="noopener">GitHub <span class="arw">↗</span></a>
+      <a href="https://github.com/" target="_blank" rel="noopener">GitHub <span class="arw">↗</span></a>
       <a href="https://linkedin.com/in/quang-dau-a88518142" target="_blank" rel="noopener">LinkedIn <span class="arw">↗</span></a>
-      <a href="mailto:manhquang144@gmail.com">Email <span class="arw">↗</span></a>
+      <a href="/cdn-cgi/l/email-protection#cba6aaa5a3babeaaa5acfaffff8baca6aaa2a7e5a8a4a6">Email <span class="arw">↗</span></a>
     </div>
   </header>
 
@@ -381,7 +433,7 @@
       <div class="timeline">
 
         <article class="job">
-          <div class="when">Aug 2022<br>– <span class="now">Now</span></div>
+          <div class="when">Aug 2022<br>– <span class="now">Present</span></div>
           <div>
             <h3 class="co">Dayforce / Ceridian</h3>
             <p class="title">Full-Stack Software Developer</p>
@@ -460,9 +512,7 @@
       <div class="section-head"><span class="idx">04</span><h2>Selected Work</h2></div>
       <div class="work-grid">
         <article class="work">
-          <div class="shot">
-            <div class="drop"></div>
-          </div>
+          <div class="shot" aria-hidden="true"></div>
           <div class="body">
             <h3>Field-Data Platform</h3>
             <p class="src">Gruntify</p>
@@ -470,9 +520,7 @@
           </div>
         </article>
         <article class="work">
-          <div class="shot">
-            <div class="drop"></div>
-          </div>
+          <div class="shot" aria-hidden="true"></div>
           <div class="body">
             <h3>Donations Reporting</h3>
             <p class="src">Electoral Commission of QLD</p>
@@ -480,9 +528,7 @@
           </div>
         </article>
         <article class="work">
-          <div class="shot">
-            <div class="drop"></div>
-          </div>
+          <div class="shot" aria-hidden="true"></div>
           <div class="body">
             <h3>Dayforce HCM</h3>
             <p class="src">Dayforce / Ceridian</p>
@@ -528,9 +574,9 @@
     <span class="sig">Manh Quang Dau</span>
     <span class="copy">© 2026 · Built in Melbourne</span>
     <div class="ftlinks">
-      <a href="https://github.com/manhquang144" target="_blank" rel="noopener">GitHub</a>
+      <a href="https://github.com/" target="_blank" rel="noopener">GitHub</a>
       <a href="https://linkedin.com/in/quang-dau-a88518142" target="_blank" rel="noopener">LinkedIn</a>
-      <a href="mailto:manhquang144@gmail.com">Email</a>
+      <a href="/cdn-cgi/l/email-protection#f994989791888c98979ec8cdcdb99e94989095d79a9694">Email</a>
     </div>
   </footer>
 
@@ -544,24 +590,48 @@
       <circle cx="600" cy="560" r="14" fill="#5fb98a"/>
     </svg>
   </template>
-  <script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+  <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
   <script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
   <script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
   <script type="text/babel" src="tweaks-panel.jsx"></script>
   <script type="text/babel">
     const { useEffect } = React;
 
+    // Each tint has a dark + light variant. Text colors live per-mode so
+    // light mode flips to dark ink (otherwise white text would vanish).
     const BG = {
-      Ink:      { bg:'oklch(0.17 0.004 70)', surface:'oklch(0.215 0.005 70)', line:'oklch(0.31 0.006 80)', lineSoft:'oklch(0.26 0.005 80)' },
-      Charcoal: { bg:'oklch(0.235 0.005 70)', surface:'oklch(0.28 0.006 70)', line:'oklch(0.37 0.007 80)', lineSoft:'oklch(0.32 0.006 80)' },
-      Slate:    { bg:'oklch(0.215 0.014 252)', surface:'oklch(0.26 0.018 252)', line:'oklch(0.35 0.02 252)', lineSoft:'oklch(0.30 0.016 252)' },
-      Espresso: { bg:'oklch(0.18 0.012 45)', surface:'oklch(0.225 0.015 45)', line:'oklch(0.32 0.018 50)', lineSoft:'oklch(0.27 0.014 48)' },
+      dark: {
+        text:'oklch(0.95 0.004 80)', muted:'oklch(0.69 0.006 80)', faint:'oklch(0.56 0.006 80)',
+        tints: {
+          Ink:      { bg:'oklch(0.17 0.004 70)',  surface:'oklch(0.215 0.005 70)', line:'oklch(0.31 0.006 80)', lineSoft:'oklch(0.26 0.005 80)' },
+          Charcoal: { bg:'oklch(0.235 0.005 70)', surface:'oklch(0.28 0.006 70)',  line:'oklch(0.37 0.007 80)', lineSoft:'oklch(0.32 0.006 80)' },
+          Slate:    { bg:'oklch(0.215 0.014 252)',surface:'oklch(0.26 0.018 252)', line:'oklch(0.35 0.02 252)', lineSoft:'oklch(0.30 0.016 252)' },
+          Espresso: { bg:'oklch(0.18 0.012 45)',  surface:'oklch(0.225 0.015 45)', line:'oklch(0.32 0.018 50)', lineSoft:'oklch(0.27 0.014 48)' },
+        }
+      },
+      light: {
+        text:'oklch(0.27 0.01 70)', muted:'oklch(0.45 0.008 70)', faint:'oklch(0.585 0.006 70)',
+        tints: {
+          Ink:      { bg:'oklch(0.985 0.002 80)', surface:'oklch(0.955 0.003 80)', line:'oklch(0.85 0.005 80)', lineSoft:'oklch(0.905 0.004 80)' },
+          Charcoal: { bg:'oklch(0.94 0.003 80)',  surface:'oklch(0.905 0.004 80)', line:'oklch(0.81 0.006 80)', lineSoft:'oklch(0.865 0.004 80)' },
+          Slate:    { bg:'oklch(0.972 0.008 252)',surface:'oklch(0.94 0.011 252)', line:'oklch(0.85 0.014 252)',lineSoft:'oklch(0.905 0.01 252)' },
+          Espresso: { bg:'oklch(0.972 0.012 75)', surface:'oklch(0.94 0.015 70)',  line:'oklch(0.86 0.018 60)', lineSoft:'oklch(0.91 0.014 65)' },
+        }
+      }
     };
     const ACCENT = {
-      Mono:  'oklch(0.86 0.012 85)',
-      Blue:  'oklch(0.74 0.10 240)',
-      Amber: 'oklch(0.80 0.11 75)',
-      Green: 'oklch(0.78 0.11 155)',
+      dark: {
+        Mono:  'oklch(0.86 0.012 85)',
+        Blue:  'oklch(0.74 0.10 240)',
+        Amber: 'oklch(0.80 0.11 75)',
+        Green: 'oklch(0.78 0.11 155)',
+      },
+      light: {
+        Mono:  'oklch(0.45 0.012 85)',
+        Blue:  'oklch(0.52 0.15 248)',
+        Amber: 'oklch(0.60 0.13 62)',
+        Green: 'oklch(0.52 0.14 155)',
+      }
     };
     const DENSITY = { Compact: '64px', Regular: '92px', Roomy: '120px' };
     const DISPLAY = {
@@ -570,7 +640,8 @@
     };
 
     const TWEAK_DEFAULTS = /*EDITMODE-BEGIN*/{
-      "background": "Espresso",
+      "mode": "Light",
+      "background": "Ink",
       "accent": "Green",
       "density": "Regular",
       "heading": "Grotesk"
@@ -581,12 +652,17 @@
 
       useEffect(() => {
         const r = document.documentElement.style;
-        const bg = BG[t.background] || BG.Ink;
-        r.setProperty('--bg', bg.bg);
-        r.setProperty('--surface', bg.surface);
-        r.setProperty('--line', bg.line);
-        r.setProperty('--line-soft', bg.lineSoft);
-        r.setProperty('--accent', ACCENT[t.accent] || ACCENT.Mono);
+        const mode = (t.mode === 'Light') ? 'light' : 'dark';
+        const pal = BG[mode];
+        const tint = pal.tints[t.background] || pal.tints.Ink;
+        r.setProperty('--bg', tint.bg);
+        r.setProperty('--surface', tint.surface);
+        r.setProperty('--line', tint.line);
+        r.setProperty('--line-soft', tint.lineSoft);
+        r.setProperty('--text', pal.text);
+        r.setProperty('--muted', pal.muted);
+        r.setProperty('--faint', pal.faint);
+        r.setProperty('--accent', ACCENT[mode][t.accent] || ACCENT[mode].Mono);
         r.setProperty('--gap-section', DENSITY[t.density] || DENSITY.Regular);
         r.setProperty('--display', DISPLAY[t.heading] || DISPLAY.Grotesk);
       }, [t]);
@@ -594,13 +670,17 @@
       return (
         <TweaksPanel title="Tweaks">
           <TweakSection label="Theme" />
+          <TweakRadio label="Mode" value={t.mode}
+            options={['Dark','Light']}
+            onChange={(v)=>setTweak('mode', v)} />
           <TweakRadio label="Background" value={t.background}
             options={['Ink','Charcoal','Slate','Espresso']}
             onChange={(v)=>setTweak('background', v)} />
-          <TweakColor label="Accent" value={ACCENT[t.accent]}
-            options={Object.values(ACCENT)}
+          <TweakColor label="Accent" value={ACCENT[(t.mode==='Light')?'light':'dark'][t.accent]}
+            options={Object.values(ACCENT[(t.mode==='Light')?'light':'dark'])}
             onChange={(v)=>{
-              const k = Object.keys(ACCENT).find(key=>ACCENT[key]===v) || 'Mono';
+              const set = ACCENT[(t.mode==='Light')?'light':'dark'];
+              const k = Object.keys(set).find(key=>set[key]===v) || 'Mono';
               setTweak('accent', k);
             }} />
           <TweakSection label="Layout & Type" />
